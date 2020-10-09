@@ -9,6 +9,7 @@ import seedu.duke.commands.DeleteCommand;
 import seedu.duke.commands.ExitCommand;
 import seedu.duke.commands.HelpCommand;
 import seedu.duke.commands.InvalidCommand;
+import seedu.duke.commands.ListCommand;
 import seedu.duke.commands.OffCommand;
 import seedu.duke.commands.OnCommand;
 import seedu.duke.commands.RemoveCommand;
@@ -94,6 +95,13 @@ class ParserTest {
         final String input = "off Lightbulb";
         final Command result = parser.parseCommand(input);
         assertTrue(result.getClass().isAssignableFrom(OffCommand.class));
+    }
+
+    @Test
+    void parse_listCommand_parserCorrectly() {
+        final String input = "list appliance";
+        final Command result = parser.parseCommand(input);
+        assertTrue(result.getClass().isAssignableFrom(ListCommand.class));
     }
 
 }
