@@ -29,21 +29,25 @@ public class ListCommand extends Command {
             if (locationList.getLocations().size() == 0) {
                 return new CommandResult(LINE + MESSAGE_LIST_NO_LOCATIONS);
             }
-            ui.showToUser(LINE + MESSAGE_LIST_LOCATIONS);
+            ui.printToUser(LINE + MESSAGE_LIST_LOCATIONS);
             for (String location : locationList.getLocations()) {
-                ui.showToUser(index + ": " + location);
+                ui.printToUser(index + ": " + location);
                 index++;
             }
+            return new CommandResult("LOCATION STRING");
         } else if (parameter.equals(APPLIANCE_TYPE)) {
             if (applianceList.getAllAppliance().size() == 0) {
                 return new CommandResult(LINE + MESSAGE_LIST_NO_APPLIANCES);
             }
-            ui.showToUser(LINE + MESSAGE_LIST_APPLIANCES);
+            ui.printToUser(LINE + MESSAGE_LIST_APPLIANCES);
             for (Appliance a : applianceList.getAllAppliance()) {
                 ui.showWithListFormat(index, a.getName(), a.getLocation(), a.getStatus(), a.getPower(), a.getType());
                 index++;
             }
+
+            return new CommandResult("YOUR STRING");
+        } else {
+            return new CommandResult("");
         }
-        return null;
     }
 }

@@ -44,7 +44,7 @@ public class SmartHomeBot {
 
     /** Prints the Goodbye message and exits. */
     private void exit() {
-        ui.showToUser(Messages.MESSAGE_EXPORT);
+        ui.printToUser(Messages.MESSAGE_EXPORT);
         ui.showGoodByeMessage();
         System.exit(0);
     }
@@ -57,6 +57,10 @@ public class SmartHomeBot {
             command = new Parser().parseCommand(userCommandText);
             CommandResult result = executeCommand(command);
             storage.writeToFile();
+            if (result != null) {
+                ui.printResultToUser(result);
+            }
+
         } while (!ExitCommand.isExit(command));
     }
 
@@ -66,7 +70,7 @@ public class SmartHomeBot {
             CommandResult result = command.execute();
             return result;
         } catch (Exception e) {
-            ui.showToUser(e.getMessage());
+            ui.printToUser(e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -24,6 +24,7 @@ public class OnCommand extends Command {
 
     @Override
     public CommandResult execute() {
+        // NEED TO IMPROVE
         for (Appliance appliance : applianceList.getAllAppliance()) {
             if (appliance.getName().equals((this.name))) {
                 if (appliance.switchOn()) {

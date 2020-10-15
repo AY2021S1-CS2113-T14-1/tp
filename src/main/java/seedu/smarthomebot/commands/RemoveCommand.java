@@ -1,7 +1,11 @@
 package seedu.smarthomebot.commands;
 
+import seedu.smarthomebot.exceptions.ApplianceNotFoundException;
 import seedu.smarthomebot.exceptions.EmptyParameterException;
+import seedu.smarthomebot.exceptions.InvalidRemovalLocationException;
 
+import static seedu.smarthomebot.common.Messages.LINE;
+import static seedu.smarthomebot.common.Messages.MESSAGE_APPLIANCE_NOT_EXIST;
 import static seedu.smarthomebot.common.Messages.MESSAGE_LOCATION_NOT_EXIST;
 
 public class RemoveCommand extends Command {
@@ -14,27 +18,20 @@ public class RemoveCommand extends Command {
             + " Bedroom 1";
     private final String usersEnteredLocation;
 
-    public RemoveCommand(String location) throws EmptyParameterException {
-        if (location.isEmpty()) {
-            throw new EmptyParameterException();
-        }
+    public RemoveCommand(String location) {
         this.usersEnteredLocation = location;
     }
 
     @Override
     public CommandResult execute() {
-        Boolean isLocationExist = locationList.isLocationCreated(this.usersEnteredLocation);
-        if (isLocationExist) {
-            for (int x = applianceList.getAllAppliance().size() - 1; x >= 0; x--) {
-                if (applianceList.getAppliance(x).getLocation().equals(this.usersEnteredLocation)) {
-                    applianceList.removeAppliance((applianceList.getAppliance(x).getName()));
-                }
-            }
+        try {
             locationList.removeLocation(this.usersEnteredLocation);
-            return null;
-        } else {
-            // throw new IndexOutOfBoundsException();
+            applianceList.deleteByLocation(this.usersEnteredLocation);
+            return new CommandResult(LINE + "Removing LOCATION \"" + this.usersEnteredLocation + "\"......REMOVED!");
+        } catch (InvalidRemovalLocationException e) {
             return new CommandResult(MESSAGE_LOCATION_NOT_EXIST + " Nothing will be deleted.");
+        } catch (ApplianceNotFoundException e) {
+            return new CommandResult(MESSAGE_APPLIANCE_NOT_EXIST + " Nothing will be deleted.");
         }
     }
 }

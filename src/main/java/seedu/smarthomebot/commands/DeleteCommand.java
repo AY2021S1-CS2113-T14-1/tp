@@ -1,5 +1,7 @@
 package seedu.smarthomebot.commands;
 
+import seedu.smarthomebot.data.framework.Appliance;
+import seedu.smarthomebot.exceptions.ApplianceNotFoundException;
 import seedu.smarthomebot.exceptions.EmptyParameterException;
 
 public class DeleteCommand extends Command {
@@ -11,21 +13,17 @@ public class DeleteCommand extends Command {
             + " Fan 1";
     private final String userEnteredName;
 
-    public DeleteCommand(String name) throws EmptyParameterException {
-        if (name.isEmpty()) {
-            throw new EmptyParameterException();
-        }
+    public DeleteCommand(String name) {
         this.userEnteredName = name;
     }
 
     @Override
     public CommandResult execute() {
-        Boolean isApplianceExist = applianceList.isAppliance(this.userEnteredName);
-        if (isApplianceExist) {
-            applianceList.removeAppliance(this.userEnteredName);
-        } else {
-            return new CommandResult(userEnteredName + " does not exist.");
+        try {
+            Appliance toDeleteAppliance = applianceList.removeAppliance(this.userEnteredName);
+            return new CommandResult("Deleting " + toDeleteAppliance + ".......DELETED.");
+        } catch (ApplianceNotFoundException e) {
+            return new CommandResult(this.userEnteredName + " does not exist.");
         }
-        return null;
     }
 }

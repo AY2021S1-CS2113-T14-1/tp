@@ -1,5 +1,6 @@
 package seedu.smarthomebot.ui;
 
+import seedu.smarthomebot.commands.CommandResult;
 import seedu.smarthomebot.data.framework.Appliance;
 
 import java.io.InputStream;
@@ -39,15 +40,19 @@ public class TextUi {
     /**
      * Shows message(s) to the user.
      */
-    public void showToUser(String message) {
+    public void printToUser(String message) {
         out.println(message);
+    }
+
+    public void printResultToUser(CommandResult result) {
+        printToUser(result.feedbackToUser);
     }
 
     /**
      * Print a divider.
      */
     private void printDivider() {
-        showToUser(DIVIDER);
+        printToUser(DIVIDER);
     }
 
     /** Find length of longest appliance name and location for formatting. */
@@ -64,7 +69,7 @@ public class TextUi {
         String formattedStatus = MESSAGE_DISPLAY_STATUS + String.format("%-3s", status);
         String formattedUsage =  MESSAGE_DISPLAY_USAGE + String.format("%.2f kWh", powerUsage);
         String result = formattedIndex + formattedName + formattedLocation + formattedStatus + formattedUsage;
-        showToUser(result);
+        printToUser(result);
     }
 
     /** Find length of longest appliance name and location for formatting. */
@@ -84,7 +89,7 @@ public class TextUi {
         String formattedType = MESSAGE_DISPLAY_TYPE + String.format("%s",  type);
         String result = formattedIndex + formattedName + formattedLocation
                 + formattedStatus + formattedUsage + formattedType;
-        showToUser(result);
+        printToUser(result);
     }
 
     /**
@@ -125,13 +130,13 @@ public class TextUi {
 
     public void showWelcomeMessage() {
         printDivider();
-        showToUser(MESSAGE_WELCOME);
+        printToUser(MESSAGE_WELCOME);
     }
 
     /**
      * Generates and prints the Goodbye message upon the end of the application.
      */
     public void showGoodByeMessage() {
-        showToUser(MESSAGE_GOODBYE);
+        printToUser(MESSAGE_GOODBYE);
     }
 }

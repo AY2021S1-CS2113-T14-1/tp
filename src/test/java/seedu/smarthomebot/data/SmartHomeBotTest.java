@@ -59,7 +59,7 @@ class SmartHomeBotTest {
         if (aircon.getStatus().equals("On")) {
             assertEquals("aircon: On", aircon.toString());
         } else {
-            assertEquals("aircon: Off", aircon.toString());
+            assertEquals("aircon(200W) in br1", aircon.toString());
         }
     }
 

@@ -1,12 +1,16 @@
 package seedu.smarthomebot.storage;
 
 import seedu.smarthomebot.common.Messages;
-import seedu.smarthomebot.data.LocationList;
-import seedu.smarthomebot.exceptions.EmptyParameterException;
-import seedu.smarthomebot.commands.AddCommand;
-import seedu.smarthomebot.commands.CreateCommand;
+import seedu.smarthomebot.data.AirConditioner;
 import seedu.smarthomebot.data.ApplianceList;
+import seedu.smarthomebot.data.Fan;
+import seedu.smarthomebot.data.Lights;
+import seedu.smarthomebot.data.LocationList;
+import seedu.smarthomebot.data.WaterHeater;
+import seedu.smarthomebot.exceptions.EmptyParameterException;
 import seedu.smarthomebot.exceptions.FileCorrupted;
+import seedu.smarthomebot.exceptions.InvalidAdditionOfAppliance;
+import seedu.smarthomebot.exceptions.InvalidAddtionOfLocation;
 import seedu.smarthomebot.ui.TextUi;
 
 import java.io.File;
@@ -15,6 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
+
+import static seedu.smarthomebot.common.Messages.MESSAGE_APPLIANCE_TYPE_NOT_EXIST;
 
 public class StorageFile {
 
@@ -44,7 +50,7 @@ public class StorageFile {
             }
             myWriter.close();
         } catch (IOException e) {
-            ui.showToUser("An error occur");
+            ui.printToUser("An error occur");
         }
     }
 
@@ -57,18 +63,18 @@ public class StorageFile {
             try {
                 convertTextToLocationList(locationList);
                 convertTextToApplianceList(i, myReader);
-                ui.showToUser(Messages.MESSAGE_IMPORT);
+                ui.printToUser(Messages.MESSAGE_IMPORT);
             } catch (FileCorrupted e) {
-                ui.showToUser(Messages.MESSAGE_FILE_CORRUPTED);
+                ui.printToUser(Messages.MESSAGE_FILE_CORRUPTED);
             }
 
             myReader.close();
-        } catch (FileNotFoundException | EmptyParameterException e) {
-            ui.showToUser("Load File Does not Exist. No contents will be loaded.");
+        } catch (FileNotFoundException | EmptyParameterException | InvalidAdditionOfAppliance e) {
+            ui.printToUser("Load File Does not Exist. No contents will be loaded.");
         }
     }
 
-    private void convertTextToApplianceList(int i, Scanner myReader) throws FileCorrupted {
+    private void convertTextToApplianceList(int i, Scanner myReader) throws FileCorrupted, InvalidAdditionOfAppliance {
         while (myReader.hasNextLine()) {
             try {
                 String appliance = myReader.nextLine();
@@ -77,9 +83,32 @@ public class StorageFile {
                         || splitString[2].isEmpty() || splitString[3].isEmpty()) {
                     throw new FileCorrupted();
                 }
-                AddCommand add = new AddCommand(splitString[1], splitString[0], splitString[2], splitString[3], false);
-                add.setData(applianceList, locationList);
-                add.execute();
+                String name = splitString[1];
+                String location = splitString[0];
+                String power = splitString[2];
+                String type = splitString[3];
+
+                switch (type.toLowerCase()) {
+                case Fan.TYPE_WORD:
+                    Fan fan = new Fan(name, location, power);
+                    applianceList.addAppliance(fan);
+                    break;
+                case AirConditioner.TYPE_WORD:
+                    AirConditioner ac = new AirConditioner(name, location, power);
+                    applianceList.addAppliance(ac);
+                    break;
+                case Lights.TYPE_WORD:
+                    Lights light = new Lights(name, location, power);
+                    applianceList.addAppliance(light);
+                    break;
+                case WaterHeater.TYPE_WORD:
+                    WaterHeater waterheater = new WaterHeater(name, location, power);
+                    applianceList.addAppliance(waterheater);
+                    break;
+                default:
+                    ui.printToUser(MESSAGE_APPLIANCE_TYPE_NOT_EXIST);
+                }
+
                 applianceList.getAppliance(i).loadConsumptionFromFile(splitString[5]);
                 if (splitString[4].toLowerCase().equals("on")) {
                     applianceList.getAppliance(i).switchOn();
@@ -98,12 +127,10 @@ public class StorageFile {
             int end = location.indexOf("]");
             String when = location.substring(start, end);
             String[] stringSplit = when.split(",");
-            for (String s : stringSplit) {
-                CreateCommand newLocation = new CreateCommand(s.trim(), false);
-                newLocation.setData(applianceList, locationList);
-                newLocation.execute();
+            for (String locationName : stringSplit) {
+                locationList.addLocation(locationName.trim());
             }
-        } catch (IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException | InvalidAddtionOfLocation e) {
             throw new FileCorrupted();
         }
 
@@ -122,7 +149,7 @@ public class StorageFile {
             }
 
         } catch (IOException e) {
-            ui.showToUser("Unable to create file.");
+            ui.printToUser("Unable to create file.");
         }
     }
 
@@ -132,7 +159,7 @@ public class StorageFile {
             writer.print("");
             writer.close();
         } catch (FileNotFoundException e) {
-            ui.showToUser("File is empty.");
+            ui.printToUser("File is empty.");
         }
     }
 }

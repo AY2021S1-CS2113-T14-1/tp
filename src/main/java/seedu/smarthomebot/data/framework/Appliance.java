@@ -133,7 +133,7 @@ public abstract class Appliance {
     public abstract String getType();
 
     public String toString() {
-        return this.name + ": " + getStatus();
+        return  this.getName() + "(" + this.getPower() + "W)" + " in " + this.getLocation();
     }
 
 }

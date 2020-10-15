@@ -5,6 +5,7 @@ import seedu.smarthomebot.data.Fan;
 import seedu.smarthomebot.data.Lights;
 import seedu.smarthomebot.data.WaterHeater;
 import seedu.smarthomebot.exceptions.InvalidAdditionOfAppliance;
+import seedu.smarthomebot.exceptions.LocationNotFoundException;
 
 import static seedu.smarthomebot.common.Messages.MESSAGE_APPLIANCE_EXIST;
 import static seedu.smarthomebot.common.Messages.MESSAGE_APPLIANCE_TYPE_NOT_EXIST;
@@ -23,62 +24,46 @@ public class AddCommand extends Command {
     private final String location;
     private final String power;
     private final String type;
-    private final boolean toPrint;
 
-    public AddCommand(String name, String location, String power, String type, Boolean toPrint) {
+    public AddCommand(String name, String location, String power, String type) {
         this.name = name;
         this.location = location;
         this.power = power;
         this.type = type;
-        this.toPrint = toPrint;
     }
 
-    private String feedbackAddToUser() {
-        if (this.toPrint) {
-            return ("Adding " + type + ": " + name + " (" + power + "W) in " + location + ".....ADDED!");
-        } else {
-            return null;
-        }
-    }
 
     @Override
     public CommandResult execute() {
-        if (locationList.isLocationCreated(location)) {
-            try {
-                switch (type.toLowerCase()) {
-                case Fan.TYPE_WORD:
-                    Fan fan = new Fan(name, location, power);
-                    applianceList.addAppliance(fan);
-                    return new CommandResult(feedbackAddToUser());
-                case AirConditioner.TYPE_WORD:
-                    AirConditioner ac = new AirConditioner(name, location, power);
-                    applianceList.addAppliance(ac);
-                    return new CommandResult(feedbackAddToUser());
-                case Lights.TYPE_WORD:
-                    Lights light = new Lights(name, location, power);
-                    applianceList.addAppliance(light);
-                    return new CommandResult(feedbackAddToUser());
-                case WaterHeater.TYPE_WORD:
-                    WaterHeater waterheater = new WaterHeater(name, location, power);
-                    applianceList.addAppliance(waterheater);
-                    return new CommandResult(feedbackAddToUser());
-                default:
-                    if (this.toPrint) {
-                        return new CommandResult(MESSAGE_APPLIANCE_TYPE_NOT_EXIST);
-                    }
-                }
-            } catch (InvalidAdditionOfAppliance e) {
-                if (this.toPrint) {
-                    return new CommandResult(MESSAGE_APPLIANCE_EXIST);
-                }
+        try {
+            if (!locationList.isLocationCreated(this.location)) {
+                throw new LocationNotFoundException();
             }
+            switch (type.toLowerCase()) {
+            case Fan.TYPE_WORD:
+                Fan fan = new Fan(name, location, power);
+                applianceList.addAppliance(fan);
+                return new CommandResult("ADDING " + fan.toString() + "......ADDED");
+            case AirConditioner.TYPE_WORD:
+                AirConditioner ac = new AirConditioner(name, location, power);
+                applianceList.addAppliance(ac);
+                return new CommandResult("ADDING " + ac.toString() + "......ADDED");
+            case Lights.TYPE_WORD:
+                Lights light = new Lights(name, location, power);
+                applianceList.addAppliance(light);
+                return new CommandResult("ADDING " + light.toString() + "......ADDED");
+            case WaterHeater.TYPE_WORD:
+                WaterHeater waterheater = new WaterHeater(name, location, power);
+                applianceList.addAppliance(waterheater);
+                return new CommandResult("ADDING " + waterheater.toString() + "......ADDED");
+            default:
+                return new CommandResult(MESSAGE_APPLIANCE_TYPE_NOT_EXIST);
+            }
+        } catch (InvalidAdditionOfAppliance e) {
+            return new CommandResult(MESSAGE_APPLIANCE_EXIST);
 
-        } else {
-            if (this.toPrint) {
-                return new CommandResult(MESSAGE_LOCATION_NOT_EXIST);
-            }
+        } catch (LocationNotFoundException e) {
+            return new CommandResult(MESSAGE_LOCATION_NOT_EXIST);
         }
-        return null;
     }
-
 }

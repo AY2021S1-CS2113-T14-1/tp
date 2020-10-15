@@ -1,6 +1,8 @@
 package seedu.smarthomebot.data;
 
+import seedu.smarthomebot.data.framework.Appliance;
 import seedu.smarthomebot.exceptions.InvalidAddtionOfLocation;
+import seedu.smarthomebot.exceptions.InvalidRemovalLocationException;
 
 import java.util.ArrayList;
 
@@ -28,7 +30,16 @@ public class LocationList {
      *
      * @param location used to be removed from the location list
      */
-    public void removeLocation(String location) {
+    public void removeLocation(String location) throws InvalidRemovalLocationException {
+        if (!(isLocationCreated(location))) {
+            throw new InvalidRemovalLocationException();
+        } else {
+            int removeIndex = getRemoveLocationIndex(location);
+            locations.remove(removeIndex);
+        }
+    }
+
+    private int getRemoveLocationIndex(String location) {
         int removeIndex = -1;
         int locationIndex = 0;
         for (String l : locations) {
@@ -39,9 +50,7 @@ public class LocationList {
                 locationIndex++;
             }
         }
-
-        System.out.printf(LINE + "Removing LOCATION \"%s\"......REMOVED!\n", location);
-        locations.remove(removeIndex);
+        return removeIndex;
     }
 
     public ArrayList<String> getLocations() {

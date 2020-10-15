@@ -1,70 +1,68 @@
 package seedu.smarthomebot.data;
 
 import seedu.smarthomebot.data.framework.Appliance;
+import seedu.smarthomebot.exceptions.ApplianceNotFoundException;
 import seedu.smarthomebot.exceptions.InvalidAdditionOfAppliance;
 import seedu.smarthomebot.ui.TextUi;
 
 import java.util.ArrayList;
 
-import static seedu.smarthomebot.common.Messages.LINE;
-
 public class ApplianceList {
 
-    private static ArrayList<Appliance> appliances;
+    private static ArrayList<Appliance> applianceList;
     private static TextUi ui = new TextUi();
 
     public ApplianceList() {
-        appliances = new ArrayList<>();
+        applianceList = new ArrayList<>();
     }
 
     public void addAppliance(Appliance appliance) throws InvalidAdditionOfAppliance {
-        if (!isAppliance(appliance.getName())) {
-            appliances.add(appliance);
+        if (!isApplianceExist(appliance.getName())) {
+            applianceList.add(appliance);
         } else {
             throw new InvalidAdditionOfAppliance();
         }
     }
 
-    public void removeAppliance(String userEnteredName) {
-        for (int i = 0; i < getAllAppliance().size(); i++) {
-            if (getAppliance(i).getName().equals(userEnteredName)) {
-                String location = getAppliance(i).getLocation();
-                String type = getAppliance(i).getType();
-                String name = getAppliance(i).getName();
-                String power = getAppliance(i).getPower();
-                String result = String.format(LINE + "Deleting %s: %s (%s) in %s......DELETED!",
-                        type, name, power, location);
-                ui.showToUser(result);
-                appliances.remove(i);
-                break;
-            }
-            if (i == getAllAppliance().size() - 1) {
-                throw new IndexOutOfBoundsException();
+    public Appliance removeAppliance(String userEnteredName) throws ApplianceNotFoundException {
+        for (Appliance appliance : this.getAllAppliance()) {
+            if (appliance.getName().equals(userEnteredName)) {
+                applianceList.remove(appliance);
+                return appliance;
             }
         }
+        throw new ApplianceNotFoundException();
     }
 
     public Appliance getAppliance(int index) {
-        return appliances.get(index);
+        return applianceList.get(index);
     }
 
     public ArrayList<Appliance> getAllAppliance() {
-        return appliances;
+        return applianceList;
     }
 
     public void setAppliance(int index, Appliance appliance) {
-        appliances.set(index, appliance);
+        applianceList.set(index, appliance);
     }
 
-    public Boolean isAppliance(String toAddApplianceName) {
+    public Boolean isApplianceExist(String toAddApplianceName) {
         boolean isExist = false;
-        for (Appliance a : appliances) {
+        for (Appliance a : applianceList) {
             if (a.getName().equals(toAddApplianceName)) {
                 isExist = true;
                 break;
             }
         }
         return isExist;
+    }
+
+    public void deleteByLocation(String usersEnteredLocation) throws ApplianceNotFoundException {
+        for (int x = this.getAllAppliance().size() - 1; x >= 0; x--) {
+            if (this.getAppliance(x).getLocation().equals(usersEnteredLocation)) {
+                this.removeAppliance((this.getAppliance(x).getName()));
+            }
+        }
     }
 
 }

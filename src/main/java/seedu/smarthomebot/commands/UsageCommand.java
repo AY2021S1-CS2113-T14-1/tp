@@ -22,7 +22,7 @@ public class UsageCommand extends Command {
         if (applianceList.getAllAppliance().size() == 0) {
             return new CommandResult(LINE + MESSAGE_LIST_NO_APPLIANCES);
         } else {
-            ui.showToUser(LINE + MESSAGE_POWER_USAGE);
+            ui.printToUser(LINE + MESSAGE_POWER_USAGE);
             for (Appliance a : applianceList.getAllAppliance()) {
                 double appliancePower = a.measureConsumption();
                 totalUsage += appliancePower;

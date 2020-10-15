@@ -39,7 +39,7 @@ public class Parser {
             case HelpCommand.COMMAND_WORD:
                 return new HelpCommand();
             case CreateCommand.COMMAND_WORD:
-                return new CreateCommand(arguments, true);
+                return new CreateCommand(arguments);
             case RemoveCommand.COMMAND_WORD:
                 return new RemoveCommand(arguments);
             case AddCommand.COMMAND_WORD:
@@ -85,7 +85,7 @@ public class Parser {
 
         try {
             testPowerValidity(power);
-            return new AddCommand(name, location, power, type, true);
+            return new AddCommand(name, location, power, type);
 
         } catch (InvalidPowerNumber e) {
             return new InvalidCommand(MESSAGE_POWER_NOT_NUMBER);

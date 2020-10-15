@@ -11,7 +11,6 @@ public class Messages {
     public static final String MESSAGE_APPLIANCE_TYPE_NOT_EXIST = "Type Entered does not exist.";
     public static final String MESSAGE_APPLIANCE_EXIST = "Appliance name already exists.";
     public static final String MESSAGE_LOCATION_NOT_EXIST = "Location does not exist.";
-    public static final String MESSAGE_LOCATION_EXIST = "Location already exist";
     public static final String MESSAGE_DISPLAY_LOCATION = " | Location: ";
     public static final String MESSAGE_DISPLAY_STATUS = " | Status: ";
     public static final String MESSAGE_DISPLAY_USAGE = " | Usage: ";
@@ -34,4 +33,5 @@ public class Messages {
     public static final String MESSAGE_APPLIANCE_PREVIOUSLY_OFF = "The appliance is already OFF previously.";
     public static final String MESSAGE_FILE_CORRUPTED = "Data file is corrupted, some data will not be entered";
 
+    public static final String MESSAGE_APPLIANCE_NOT_EXIST = "Appliance does not exist in the list.";
 }
