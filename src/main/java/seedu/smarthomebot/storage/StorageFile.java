@@ -24,7 +24,7 @@ import static seedu.smarthomebot.common.Messages.MESSAGE_APPLIANCE_TYPE_NOT_EXIS
 
 public class StorageFile {
 
-    private static final String filePath = "data/SmartHomeBot.txt";
+    private static final String filePath = "/data/SmartHomeBot.txt";
     private static ApplianceList applianceList;
     private static LocationList locationList;
     private final TextUi ui = new TextUi();
