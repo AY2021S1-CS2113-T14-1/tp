@@ -82,7 +82,7 @@ Example: `create Bedroom1`
 
 Output:
 
-   ![](images/user_guide/create_image.PNG) 
+   ![](images/user_guide/CreateCommand.PNG) 
 
 <br/><br/>
 ### Removing a location: `remove`
