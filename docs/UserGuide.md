@@ -80,6 +80,8 @@ Format: `create [LOCATION_NAME]`
 
 Example: `create Bedroom1`
 
+Output:
+
    ![](images/user_guide/create_image.PNG) 
 
 <br/><br/>
@@ -91,9 +93,8 @@ Format: `remove [LOCATION_NAME]`
 Example: `remove Bedroom1`
 
 Output: 
-```
-Removing LOCATION "Bedroom1"......REMOVED!
-```
+
+   ![](images/user_guide/RemoveCommand.PNG) 
 
 > Note: If there are appliances in the Location of 'LOCATION_NAME' when removing, it will be deleted as well. 
 
@@ -116,9 +117,8 @@ List of `TYPE_OF_APPLIANCE`
 Example: `add AIRCON1 l/Bedroom1 w/3500 t/aircon`
 
 Output: 
-```
-ADDING AIRCON1(3500W) in Bedroom1 ......ADDED
-```
+
+   ![](images/user_guide/AddCommand.PNG) 
 
 <br/><br/>
 ### Deleting an appliance: `delete`
@@ -129,9 +129,8 @@ Format: `delete [APPLIANCE_NAME]`
 Example: `delete AIRCON1`
 
 Output: 
-```
-Deleting AIRCON1(3500W) in Bedroom1 .......DELETED.
-```
+
+   ![](images/user_guide/DeleteCommand.PNG) 
    
 <br/><br/>
 ### Switching on an appliance: `on` 
@@ -148,30 +147,27 @@ Format: `on [APPLIANCE_NAME]` or `on [APPLIANCE_NAME] p/[PARAMETER]` or `on [LOC
 Example: `on AIRCON1`
 
 Output: 
-```
-Switching AIRCON1(3500W) in Bedroom1 @ 25 Degrees.....ON
-```
+
+   ![](images/user_guide/OnAirCon1.PNG) 
+> Note: Default temperature for Aircon is 25 and default speed of Fan is 1. 
 
 Example: `on AIRCON1 p/27`
 
 Output: 
-```
-Switching AIRCON1(3500W) in Bedroom1 @ 27 Degrees.....ON
-```
+
+   ![](images/user_guide/OnAirCon1_27.PNG) 
 
 Example: `on FAN1 p/3`
 
 Output: 
-```
-Switching FAN1(3500W) in Bedroom1  @ Speed 3.....ON
-```
+
+   ![](images/user_guide/OnFAN1.PNG) 
 
 Example: `on Bedroom1`
 
 Output: 
-```
-All appliance in "Bedroom1" are turned on 
-```
+
+   ![](images/user_guide/OnBedroom1.PNG) 
 
 <br/><br/> 
 ### Switching off an appliance: `off`
